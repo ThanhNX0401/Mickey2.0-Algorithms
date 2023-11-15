@@ -19,7 +19,7 @@ int AND(int a, int b)
 void CLOCK_R(int r[], int Ir, int Cr)
 { 
     int rtaps[50] ={0,1,3,4,5,6,9,12,13,16,19,20,21,22,25,28,37,38,41,42,45,46,50,52,54,56,58,60,61,63,64,65,66,67,71,72,79,80,81,82,87,88,89,90,91,92,94,95,96,97}; //50
-    int r_clocked[100];
+    int clock_r[100];
     int feedback_bit;
     int k=0;
     int i=0;                                                                            
@@ -27,9 +27,9 @@ void CLOCK_R(int r[], int Ir, int Cr)
     for(i=0; i<100 ;i++)
     { 
         if(i==0) 
-            r_clocked[i]=0;
+            clock_r[i]=0;
         else{
-            r_clocked[i]= r[i-1];
+            clock_r[i]= r[i-1];
         }
     }
     for(i=0; i<100; i++)
@@ -38,7 +38,7 @@ void CLOCK_R(int r[], int Ir, int Cr)
         {
             if(i==rtaps[k])
             {
-                r_clocked[i]=XOR(r_clocked[i],feedback_bit);
+                clock_r[i]=XOR(clock_r[i],feedback_bit);
                 break;
             }
         }
@@ -46,11 +46,11 @@ void CLOCK_R(int r[], int Ir, int Cr)
     if(Cr==1)
     for(i=0; i<100; i++)
     {
-        r_clocked[i]=XOR(r_clocked[i],r[i]);
+        clock_r[i]=XOR(clock_r[i],r[i]);
     }
     for(i=0; i<100; i++)
     {
-        r[i]=r_clocked[i];
+        r[i]=clock_r[i];
     }
 }
 
@@ -60,7 +60,7 @@ void CLOCK_S(int s[],int Is,int Cs)
     int comp1[]={'\0',1,0,1,1,0,0,1,0,1,1,1,1,0,0,1,0,1,0,0,0,1,1,0,1,0,1,1,1,0,1,1,1,1,0,0,0,1,1,0,1,0,1,1,1,0,0,0,0,1,0,0,0,1,0,1,1,1,0,0,0,1,1,1,1,1,1,0,1,0,1,1,1,0,1,1,1,1,0,0,0,1,0,0,0,0,1,1,1,0,0,0,1,0,0,1,1,0,0,'\0'};
     int fb0[]={1,1,1,1,0,1,0,1,1,1,1,1,1,1,1,0,0,1,0,1,1,1,1,1,1,1,1,1,1,0,0,1,1,0,0,0,0,0,0,1,1,1,0,0,1,0,0,1,0,1,0,1,0,0,1,0,1,1,1,1,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,1,1,0,1,0,0,0,1,1,0,1,1,1,0,0,1,1,1,0,0,1,1,0,0,0};
     int fb1[]={1,1,1,0,1,1,1,0,0,0,0,1,1,1,0,1,0,0,1,1,0,0,0,1,0,0,1,1,0,0,1,0,1,1,0,0,0,1,1,0,0,0,0,0,1,1,0,1,1,0,0,0,1,0,0,0,1,0,0,1,0,0,1,0,1,1,0,1,0,1,0,0,1,0,1,0,0,0,1,1,1,1,0,1,1,1,1,1,0,0,0,0,0,0,1,0,0,0,0,1};
-    int s_i[100],s_clocked[100];
+    int s_i[100],clock_s[100];
     int i;
     int feedback_bit=XOR(s[99],Is);
     s_i[0]=0;
@@ -73,18 +73,18 @@ void CLOCK_S(int s[],int Is,int Cs)
     {
         for (i=0;i<100;i++)
         {
-            s_clocked[i]=XOR(s_i[i],AND(fb0[i],feedback_bit));
+            clock_s[i]=XOR(s_i[i],AND(fb0[i],feedback_bit));
         }
     }
     else{
         for (i=0;i<100;i++)
         {
-            s_clocked[i]=XOR(s_i[i],AND(fb1[i],feedback_bit));
+            clock_s[i]=XOR(s_i[i],AND(fb1[i],feedback_bit));
         }
     }
     for(i=0; i<100; i++)
     {
-        s[i]=s_clocked[i];
+        s[i]=clock_s[i];
     }
 }
 
